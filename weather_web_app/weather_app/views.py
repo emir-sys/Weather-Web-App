@@ -1,5 +1,5 @@
 import requests
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from decouple import config
 from .models import City
 from .forms import CityForm
@@ -12,7 +12,12 @@ def index(request):
 
     if request.method == 'POST':
         form = CityForm(request.POST)
-        form.save()
+        if form.is_valid():
+            city_name = form.cleaned_data['name']
+            if City.objects.filter(name=city_name).exists():
+                form.add_error('name', 'City already exists in the database.')
+            else:
+                form.save()
 
     form = CityForm()
 
@@ -35,3 +40,7 @@ def index(request):
     context = {'weather_data' : weather_data, 'form' : form}
 
     return render(request, 'weather/weather.html', context)
+
+def delete_city(request, city_name):
+    City.objects.get(name=city_name).delete()
+    return redirect('home')

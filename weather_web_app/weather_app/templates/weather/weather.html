@@ -5,12 +5,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Weather App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+    <style>
+        html,body {
+            height: 100%;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        .hero, .footer, .box {
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+        }
+
+        .button.is-info {
+            background-color: #424242;
+            color: #ffffff;
+        }
+
+        .button.is-info:hover {
+            background-color: #616161;
+        }
+
+        .title, .subtitle {
+            color: #e0e0e0;
+        }
+
+         .delete-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            border: none;
+            color: #e0e0e0;
+            cursor: pointer;
+        }
+
+        .box {
+            position: relative;
+        }
+    </style>
 </head>
 
 <body>
-    <section class="hero is-primary">
+    <section class="hero is-dark">
         <div class="hero-body">
             <div class="container">
                 <h1 class="title">
@@ -39,17 +78,17 @@
                 </div>
             </div>
         </div>
-    </section>
-    <section class="section">
+    </section>    <section class="section">
         <div class="container">
-            <div class="columns">
-                <div class="column is-offset-4 is-4">
-                    {% for weather in weather_data %}
+            <div class="columns is-multiline">
+                {% for weather in weather_data %}
+                <div class="column is-one-third">
                     <div class="box">
+                        <button class="delete-button" onclick="window.location.href='{% url 'delete_city' weather.city %}'">&times;</button>
                         <article class="media">
                             <div class="media-left">
                                 <figure class="image is-50x50">
-                                    <img src="http://openweathermap.org/img/w/{{ weather.icon }}.png" alt="Image">
+                                    <img src="http://openweathermap.org/img/w/{{ weather.icon }}.png" alt="Weather Icon">
                                 </figure>
                             </div>
                             <div class="media-content">
@@ -64,11 +103,12 @@
                             </div>
                         </article>
                     </div>
-                    {% endfor %}
                 </div>
+                {% endfor %}
             </div>
         </div>
     </section>
+
     <footer class="footer">
     </footer>
 </body>
